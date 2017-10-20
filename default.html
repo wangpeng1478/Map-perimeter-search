@@ -1,0 +1,312 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="https://cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+  <style>
+  /*公共样式*/
+
+html{width:100%;-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;-webkit-tap-highlight-color:transparent;height:100%}body{width:100%;height:100%;font-size:16px;color:#383b43;line-height:24px;background:#fff;min-height:100%;font-family:'Microsoft Yahei','微软雅黑',Arial,sans-serif}*{margin:0;padding:0;border:0}li,ol,ul,ul li{list-style:none outside none}img{vertical-align:middle;border:none;width:100%}i{font:inherit}input,option,select{vertical-align:middle;border-radius:0;-moz-appearance:none;-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;outline:0}input[type=text],input[type=button],input[type=submit],input[type=reset]{-webkit-appearance:none;appearance:none;border-radius:0;outline:0}.fl{float:left;display:inline}.fr{float:right;display:inline}h1,h2,h3,h4,h5,h6{font-weight:400}select::-ms-expand{display:none}a{color:#383b43;text-decoration:none;-webkit-tap-highlight-color:transparent}a:hover{text-decoration:none;outline:0}.clear{clear:both}.clearfix:after{content:".";display:block;height:0;clear:both;visibility:hidden}.clearfix{zoom:1;display:block;clear:both}body,html{margin:0;height:100%;width:100%;position:absolute}#container{position:absolute;top:0;left:0;right:0;bottom:0;width:100%;height:100%}.button-group{position:absolute;bottom:20px;right:20px;font-size:12px;padding:10px}.button-group .button{height:28px;line-height:28px;background-color:#0D9BF2;color:#FFF;border:0;outline:0;padding-left:5px;padding-right:5px;border-radius:3px;margin-bottom:4px;cursor:pointer}.button-group .inputtext{height:26px;line-height:26px;border:1px;outline:0;padding-left:5px;padding-right:5px;border-radius:3px;margin-bottom:4px;cursor:pointer}#tip{background-color:#fff;padding-left:10px;padding-right:10px;position:absolute;font-size:12px;right:10px;top:20px;border-radius:3px;border:1px solid #ccc;line-height:30px}.amap-info-content{font-size:12px}#myPageTop{position:absolute;top:5px;right:10px;background:#fff none repeat scroll 0 0;border:1px solid #ccc;margin:10px auto;padding:6px;font-family:"Microsoft Yahei","微软雅黑",Pinghei;font-size:14px}#myPageTop label{margin:0 20px 0 0;color:#666;font-weight:400}#myPageTop input{width:170px}#myPageTop .column2{padding-left:25px}.fangyuanMap{position:relative}.contentMap{position:relative;height:540px}.around{width:430px;height:465px;font-size:14px;position:fixed;top:25px;right:70px;background:#fff}.around .classify{background:#e4e5e6;line-height:40px;overflow:hidden;cursor:pointer}.around .classify li{width:71.67px;float:left;text-align:center}.around .classify li.selected{background:#fff;border-top:2px solid #EF4351}.around .classifyText{line-height:30px;height:425px;overflow-y:auto}.around .classifyText li{margin-top:10px}.around .classifyText li .itemList{border-bottom:1px solid #e4e5e6;margin:0 20px;padding:5px 0}.around .classifyText li .itemList p img{width:18px;height:18px;margin-right:10px}.around .classifyText li .itemList p span{float:right}.around .classifyText .traffic{overflow:hidden;margin:0 20px;border-bottom:1px solid #e4e5e6;cursor:pointer}.around .classifyText .traffic a{float:left;width:70px;text-align:center}.around .classifyText .traffic a.selected{color:#d2d2d2;border-bottom:2px solid #7f8a9a}.around .classifyText .trafficText{min-height:420px;overflow-y:auto}.marker-route{position:absolute;z-index:99;width:120px;text-align:center;border-radius:3px;-webkit-box-shadow:0 0 5px rgba(0,0,0,.3);box-shadow:0 0 5px rgba(0,0,0,.3);background:rgba(255,255,255,.77);padding:8px 10px;-webkit-transition:.5s;transition:.5s;font-size:13px}.marker-route:before{content:"";width:0;height:0;border-style:solid;border-width:5px;border-color:transparent transparent #fff transparent;position:absolute;top:-10px;left:58px}.marker-route:hover{-webkit-box-shadow:6px 6px 5px rgba(0,0,0,.3);box-shadow:6px 6px 5px rgba(0,0,0,.3);background:#fff}.amap-marker{z-index:10!important}.around .classifyText::-webkit-scrollbar{width:6px}.around .classifyText::-webkit-scrollbar-thumb{border-radius:10px;background-color:rgba(204,204,204,.8)}
+  </style>
+</head>
+<body>
+  <div class="fangyuanMap">
+    <div class="contentMap">
+      <div id="container"></div>
+    </div>
+    <div class="around">
+      <ul class="classify">
+        <li class="selected">交通</li>
+        <li>餐饮</li>
+        <li>娱乐</li>
+        <li>银行</li>
+        <li>酒店</li>
+        <li>周边楼盘</li>
+      </ul>
+      <ul class="classifyText">
+        <li>
+          <div class="traffic">
+            <a class="selected">地铁站</a>
+            <a>公交站</a>
+          </div>
+          <div class="trafficText">
+            <div id="dt" class="trafficContent">
+            
+            </div>
+            <div id="gj" class="trafficContent hide">
+           
+            </div>
+          </div>
+        </li>
+        <li id="cy" class="hide">
+       
+        </li>
+        <li id="yl" class="hide">
+      
+        </li>
+        <li id="yh" class="hide">
+        
+        </li>
+        <li id="jd" class="hide">
+       
+        </li>
+        <li id="zb" class="hide">
+       
+        </li>
+      </ul>
+    </div>
+  </div>
+  <!-- <script type="text/javascript" src="js/d14d9a5857774724a94d09ee06c9c0a4.js"></script> -->
+  <script type="text/javascript" src="http://webapi.amap.com/maps?v=1.3&key=1413bdd7cf06cd300b31697df6ec0f27"></script>
+  <script type="text/javascript" src="http://cache.amap.com/lbs/static/addToolbar.js"></script>
+  
+  <script type="text/javascript">
+  //初始化获取服务数据
+  var cpoint = [121.523163,31.227843]; //中心点坐标
+  var map_neme = "江苏大厦"; //中心点name
+  // ===================================
+  var flag = true;
+  var radius = 1500; //米
+  var scity = "上海";
+
+  var map = new AMap.Map("container", {
+    resizeEnable: true,
+    center: cpoint,
+    animateEnable: false,
+    zoomEnable: false,
+    zoom: 15
+  });
+
+
+
+  map.plugin(["AMap.ToolBar"], function() {
+    map.addControl(new AMap.ToolBar());
+  });
+
+  AMap.event.addListener(map, 'complete', function() {
+
+  });
+
+  //0:地铁,1:公交,2:餐饮,3:娱乐 4:银行 5:住宿,6:商务住宅
+  function findNearByIndex(index) {
+    //alert('index : '+index);
+    var keywork = getTypeOfIndex(index);
+    if (keywork[0] != undefined) {
+
+      keywork[1].children().remove()
+      findNearByDataConversion(keywork[0], function(result) {
+        if (result != undefined) {
+          excTypeOfIndex(index, result, keywork[1], keywork[2]);
+        } else {
+          excTypeOfIndex();
+        }
+      });
+    } else {
+      excTypeOfIndex();
+    }
+  }
+
+  function getTypeOfIndex(index) {
+
+    var tag = undefined;
+    var dom = undefined;
+    var icon;
+    switch (index) {
+      case 0:
+        tag = '地铁';
+        dom = $("#dt");
+        icon = 'gj.png'
+        break;
+      case 1:
+        tag = '公交';
+        dom = $("#gj");
+        icon = 'gj.png'
+        break;
+      case 2:
+        tag = '餐饮';
+        dom = $("#cy");
+        icon = 'cy.png'
+        break;
+      case 3:
+        tag = '娱乐';
+        dom = $("#yl");
+        icon = 'yl.png'
+        break;
+      case 4: //银行
+        tag = '银行';
+        dom = $("#yh");
+        icon = 'yh.png'
+        break;
+      case 5:
+        tag = '住宿';
+        dom = $("#jd");
+        icon = 'jd.png'
+        break;
+      case 6:
+        tag = '商务住宅';
+        dom = $("#zb");
+        icon = 'zz.png'
+        break;
+      default:
+        break;
+    }
+    var a = new Array(tag, dom, icon);
+    //alert(a);
+    //return new Array(tag,dom);
+    return a;
+
+  }
+
+  function excTypeOfIndex(index, result, dom, icon) {
+
+    for (var i = 0; i < result.length; i++) {
+      var item = result[i];
+      var info = item.id + "\n" + item.name + "\n" + item.type + "\n" + item.address + "\n" + item.location + "\n" + item.distance + "米\n" + item.tel;
+      var dtlist = '<div class="itemList"><p><img src="ico/' + icon + '">' + item.name + '<span><img src="ico/dw.png">' + item.distance + '米</span></p><p>' + item.address + '</p></div>';
+      dom.append(dtlist);
+    }
+  }
+
+  function findNearBy(keywork, callback) {
+    //alert("keywork " + keywork);
+    map.clearMap(); // 清除地图覆盖物
+    AMap.service(["AMap.PlaceSearch"], function() {
+      var placeSearch = new AMap.PlaceSearch({ //构造地点查询类
+        pageSize: 10,
+        type: '',
+        pageIndex: 1,
+        city: scity, //城市
+        citylimit: true,
+        showCover: false,
+        map: map,
+        autoFitView: true
+      });
+      //餐饮服务（餐饮） 金融保险服务（银行） 生活服务（娱乐）住宿服务(住在) 商务住宅 公交，地铁
+      placeSearch.searchNearBy(keywork, cpoint, radius, function(status, result) {
+        callback(status, result);
+
+        if (flag) {
+          flag = false;
+          window.setTimeout('excuPanBy200()', 600)
+        } else {
+          excuPanBy200();
+        }
+        addMarker();
+        aaddnam();
+        map.setZoomAndCenter(15, cpoint);
+      });
+
+    });
+  }
+  function excuPanBy200() {
+    map.panBy(-200, 0);
+    //偏移
+  }
+
+  function findNearByDataConversion(keywork, callback) {
+    findNearBy(keywork, function(status, result) {
+      if (status == 'complete') {
+        var arrObj = result['poiList'].pois;
+        callback(arrObj);
+      } else if (status == 'error') {
+        callback(undefined);
+      } else if (status == 'no_data') {
+        callback(undefined);
+      } else {
+        callback(undefined);
+      }
+
+    })
+
+  }
+
+  findNearByIndex(0);
+
+  // 实例当前坐标标记
+  function addMarker() {
+    marker = new AMap.Marker({
+      icon: "ico/bendi.png",
+      position: cpoint
+    });
+    marker.setMap(map);
+  }
+
+  function dOpen() {
+    $(".quanjing").show();
+    $(".quanjing").css({
+      "opacity": "1",
+      "z-index": "999"
+    })
+  }
+  $(".quanjing .close").click(function() {
+    $(".quanjing").hide();
+    $(".quanjing").css({
+      "opacity": "0",
+      "z-index": "-1"
+    })
+  })
+  // =======
+  //添加点标记，并使用自己的icon
+  function aaddnam() {
+    var marker = new AMap.Marker({ //添加自定义点标记
+      map: map,
+      position: cpoint, //基点位置
+      offset: new AMap.Pixel(-60, -0), //相对于基点的偏移位置
+      content: '<div onclick="setZoomAndCe()" class="marker-route">' + map_neme + '</div>' //自定义点标记覆盖物内容
+    });
+
+  }
+  function setZoomAndCe() {
+    // 设置缩放级别和中心点
+    map.setZoomAndCenter(17, cpoint);
+    map.panBy(-200, 0);
+    //偏移
+  }
+
+  </script>
+  <script type="text/javascript">
+  $(document).ready(function() {
+    $(".around .classify li").click(function() {
+      $(this).addClass("selected").siblings().removeClass("selected");
+      var index = $(".around .classify li").index(this);
+      $(".classifyText li").eq(index).show().siblings().hide();
+      if (index == 0) {
+        findNearByIndex(index);
+      } else {
+        findNearByIndex(index + 1);
+      }
+    });
+    $(".traffic a").click(function() {
+      $(this).addClass("selected").siblings().removeClass("selected");
+      var index = $(".traffic a").index(this);
+      $(".trafficText .trafficContent").eq(index).show().siblings().hide();
+      findNearByIndex(index);
+    });
+    setZoomAndCe() //缩放等级
+    aaddnam();
+  });
+  </script>
+  <style>
+  .amap-icon img {
+    width: auto;
+    -webkit-transition:0.5s;
+    transition:0.5s;
+    -webkit-animation:myfirst 1s linear infinite;
+            animation:myfirst 1s linear infinite;
+  }
+  @-webkit-keyframes myfirst
+{
+    0% {-webkit-transform:scale(1);transform:scale(1)}
+    50% {-webkit-transform:scale(1.3);transform:scale(1.3)}
+    100% {-webkit-transform:scale(1);transform:scale(1)}
+}
+  @keyframes myfirst
+{
+    0% {-webkit-transform:scale(1);transform:scale(1)}
+    50% {-webkit-transform:scale(1.3);transform:scale(1.3)}
+    100% {-webkit-transform:scale(1);transform:scale(1)}
+}
+  </style>
+</body>
+
+</html>
